@@ -139,33 +139,16 @@ public class ArticleListActivity extends ActionBarActivity implements
     }
 
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
-
         private Cursor mCursor;
 
         public Adapter(Cursor cursor) {
             mCursor = cursor;
         }
 
-        private Date parsePublishedDate() {
-            try {
-                String date = mCursor.getString(ArticleLoader.Query.PUBLISHED_DATE);
-                return dateFormat.parse(date);
-            } catch (ParseException ex) {
-                Log.e(TAG, ex.getMessage());
-                Log.i(TAG, "passing today's date");
-                return new Date();
-            }
-        }
-
         @Override
         public long getItemId(int position) {
             mCursor.moveToPosition(position);
             return mCursor.getLong(ArticleLoader.Query._ID);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mCursor.getCount();
         }
 
         @Override
@@ -180,6 +163,17 @@ public class ArticleListActivity extends ActionBarActivity implements
                 }
             });
             return vh;
+        }
+
+        private Date parsePublishedDate() {
+            try {
+                String date = mCursor.getString(ArticleLoader.Query.PUBLISHED_DATE);
+                return dateFormat.parse(date);
+            } catch (ParseException ex) {
+                Log.e(TAG, ex.getMessage());
+                Log.i(TAG, "passing today's date");
+                return new Date();
+            }
         }
 
         @Override
@@ -230,5 +224,9 @@ public class ArticleListActivity extends ActionBarActivity implements
                     .into(holder.thumbnailView);
         }
 
+        @Override
+        public int getItemCount() {
+            return mCursor.getCount();
+        }
     }
 }

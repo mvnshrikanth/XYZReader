@@ -1,5 +1,7 @@
 package com.example.sunny.xyzreader.remote;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -19,6 +21,7 @@ public class RemoteEndpointUtil {
     private RemoteEndpointUtil() {
     }
 
+    @Nullable
     public static JSONArray fetchJsonArray() {
         String itemsJson = null;
         try {
@@ -43,6 +46,7 @@ public class RemoteEndpointUtil {
         return null;
     }
 
+    @NonNull
     static String fetchPlainText(URL url) throws IOException {
         OkHttpClient client = new OkHttpClient();
 
