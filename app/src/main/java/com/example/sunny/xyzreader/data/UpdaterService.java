@@ -22,9 +22,9 @@ import java.util.ArrayList;
 
 public class UpdaterService extends IntentService {
     public static final String BROADCAST_ACTION_STATE_CHANGE
-            = "com.example.sunny.xyzreader.intent.action.STATE_CHANGE";
+            = "com.example.xyzreader.intent.action.STATE_CHANGE";
     public static final String EXTRA_REFRESHING
-            = "com.example.sunny.xyzreader.intent.extra.REFRESHING";
+            = "com.example.xyzreader.intent.extra.REFRESHING";
     private static final String TAG = "UpdaterService";
 
     public UpdaterService() {
