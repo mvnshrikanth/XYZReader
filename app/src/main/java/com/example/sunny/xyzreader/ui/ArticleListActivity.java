@@ -1,6 +1,5 @@
 package com.example.sunny.xyzreader.ui;
 
-
 import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,11 +7,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -23,12 +20,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.example.sunny.xyzreader.R;
 import com.example.sunny.xyzreader.data.ArticleLoader;
 import com.example.sunny.xyzreader.data.ItemsContract;
@@ -198,30 +189,10 @@ public class ArticleListActivity extends ActionBarActivity implements
             }
 
 
-            Glide.clear(holder.thumbnailView);
-            Glide.with(holder.thumbnailView.getContext())
-                    .load(mCursor.getString(ArticleLoader.Query.THUMB_URL))
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .dontAnimate()
-                    .listener(new RequestListener<String, GlideDrawable>() {
-                        @Override
-                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onResourceReady(GlideDrawable resource, String model,
-                                                       Target<GlideDrawable> target,
-                                                       boolean isFromMemoryCache, boolean isFirstResource) {
-                            Bitmap bitmap = ((GlideBitmapDrawable) resource.getCurrent()).getBitmap();
-                            Palette palette = Palette.generate(bitmap);
-                            int defaultColor = 0xFF333333;
-                            int color = palette.getDarkMutedColor(defaultColor);
-                            holder.itemView.setBackgroundColor(color);
-                            return false;
-                        }
-                    })
-                    .into(holder.thumbnailView);
+            holder.thumbnailView.setImageUrl(
+                    mCursor.getString(ArticleLoader.Query.THUMB_URL),
+                    ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
+            holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
         }
 
         @Override

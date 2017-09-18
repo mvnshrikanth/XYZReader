@@ -17,6 +17,7 @@
         <activity android:name=".ui.ArticleListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -29,6 +30,8 @@
             android:name=".data.ItemsProvider"
             android:authorities="com.example.sunny.xyzreader"
             android:exported="false" />
+
+        <activity android:name=".ui.ArticleDetailActivity"></activity>
     </application>
 
 </manifest>
