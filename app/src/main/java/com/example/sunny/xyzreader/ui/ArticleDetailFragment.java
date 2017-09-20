@@ -163,6 +163,10 @@ public class ArticleDetailFragment extends Fragment
                             mMutedColor = p.getDarkMutedColor(0xFF333333);
                             mPhotoView.setImageBitmap(response.getBitmap());
                             metaBar.setBackgroundColor(mMutedColor);
+                            if (mCollapsingToolbarLayout != null) {
+                                mCollapsingToolbarLayout.setContentScrimColor(mMutedColor);
+                                mCollapsingToolbarLayout.setStatusBarScrimColor(mMutedColor);
+                            }
                         }
                     }
                 });
@@ -178,4 +182,5 @@ public class ArticleDetailFragment extends Fragment
         super.onDestroyView();
         unbinder.unbind();
     }
+
 }
