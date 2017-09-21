@@ -71,7 +71,6 @@
                         android:textColor="@android:color/white" />
 
                 </LinearLayout>
-
             </FrameLayout>
 
             <android.support.v7.widget.Toolbar
@@ -83,7 +82,6 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
             </android.support.v7.widget.Toolbar>
-
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
@@ -108,7 +106,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="24dp"
-                android:autoLink="web"
+                android:autoLink="web|phone|email"
                 android:linksClickable="true"
                 android:paddingTop="24dp"
                 android:textColor="@android:color/black" />

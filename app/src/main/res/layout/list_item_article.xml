@@ -10,6 +10,7 @@
     android:foreground="?selectableItemBackground">
 
     <LinearLayout
+        android:id="@+id/linear_layout_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -33,7 +34,7 @@
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingTop="16dp"
-            android:textColor="@color/ltgray" />
+            android:textColor="#000000" />
 
         <TextView
             android:id="@+id/article_subtitle"

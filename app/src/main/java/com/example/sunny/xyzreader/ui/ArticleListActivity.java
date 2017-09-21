@@ -18,6 +18,7 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.sunny.xyzreader.R;
@@ -43,6 +44,7 @@ public class ArticleListActivity extends ActionBarActivity implements
     RecyclerView mRecyclerView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    private int mMutedColor = 0xFF333333;
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2, 1, 1);
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
@@ -120,12 +122,14 @@ public class ArticleListActivity extends ActionBarActivity implements
         public DynamicHeightNetworkImageView thumbnailView;
         public TextView titleView;
         public TextView subtitleView;
+        public LinearLayout linearLayout;
 
         public ViewHolder(View view) {
             super(view);
             thumbnailView = (DynamicHeightNetworkImageView) view.findViewById(R.id.thumbnail);
             titleView = (TextView) view.findViewById(R.id.article_title);
             subtitleView = (TextView) view.findViewById(R.id.article_subtitle);
+            linearLayout = (LinearLayout) view.findViewById(R.id.linear_layout_item);
         }
     }
 
@@ -193,6 +197,27 @@ public class ArticleListActivity extends ActionBarActivity implements
                     mCursor.getString(ArticleLoader.Query.THUMB_URL),
                     ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
             holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
+//
+//
+//            ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader()
+//                    .get(mCursor.getString(ArticleLoader.Query.THUMB_URL), new ImageLoader.ImageListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+//                            Bitmap bitmap = response.getBitmap();
+//                            if (bitmap != null) {
+//                                Palette p = Palette.generate(bitmap, 12);
+//                                mMutedColor = p.getDarkMutedColor(0xFF333333);
+//                                holder.thumbnailView.setImageBitmap(response.getBitmap());
+//                                holder.linearLayout.setBackgroundColor(mMutedColor);
+//                            }
+//                        }
+//                    });
+
         }
 
         @Override

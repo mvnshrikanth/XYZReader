@@ -3,6 +3,7 @@ package com.example.sunny.xyzreader.ui;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -137,6 +138,7 @@ public class ArticleDetailFragment extends Fragment
         mTitleView.setText(title);
         mAuthorView.setText(author);
         mBodyView.setText(body);
+        mBodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
 
         mShareFab.setOnClickListener(new View.OnClickListener() {
             @Override
