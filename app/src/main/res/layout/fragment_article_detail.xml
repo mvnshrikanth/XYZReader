@@ -30,18 +30,18 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true">
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/photo_background_protection" />
+
                 <ImageView
                     android:id="@+id/photo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
                     tools:ignore="ContentDescription" />
-
-                <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:background="@drawable/photo_background_protection" />-->
 
                 <LinearLayout
                     android:id="@+id/meta_bar"
@@ -57,18 +57,17 @@
 
                     <TextView
                         android:id="@+id/article_title"
-                        style="?android:attr/textAppearanceLarge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/white"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/article_author"
                         style="?android:attr/textAppearanceSmall"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/white" />
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
             </FrameLayout>
@@ -99,7 +98,6 @@
 
             <TextView
                 android:id="@+id/article_body"
-                style="?android:attr/textAppearanceMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
@@ -109,7 +107,8 @@
                 android:autoLink="web|phone|email"
                 android:linksClickable="true"
                 android:paddingTop="24dp"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
 
         </LinearLayout>
 

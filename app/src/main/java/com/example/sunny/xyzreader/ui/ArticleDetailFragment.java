@@ -3,7 +3,6 @@ package com.example.sunny.xyzreader.ui;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -106,26 +105,14 @@ public class ArticleDetailFragment extends Fragment
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+    public void onLoadFinished(Loader<Cursor> loader, final Cursor cursor) {
         if (cursor == null || cursor.isClosed() || !cursor.moveToFirst()) {
             return;
         }
 
-        final String title = cursor.getString(ArticleLoader.Query.TITLE);
-        String author = Html.fromHtml(
-                DateUtils.getRelativeTimeSpanString(
-                        cursor.getLong(ArticleLoader.Query.PUBLISHED_DATE),
-                        System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
-                        DateUtils.FORMAT_ABBREV_ALL).toString()
-                        + " by "
-                        + cursor.getString(ArticleLoader.Query.AUTHOR)).toString();
-        final String body = Html.fromHtml(cursor.getString(ArticleLoader.Query.BODY)).toString();
-        String photo = cursor.getString(ArticleLoader.Query.PHOTO_URL);
+        mBodyView.setText(Html.fromHtml(cursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
 
         if (mToolbar != null) {
-//            if (mCard == null) {
-//                mToolbar.setTitle(title);
-//            }
             mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
             mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -135,21 +122,29 @@ public class ArticleDetailFragment extends Fragment
             });
         }
 
+        final String title = cursor.getString(ArticleLoader.Query.TITLE);
         mTitleView.setText(title);
-        mAuthorView.setText(author);
-        mBodyView.setText(body);
-        mBodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
+
+        mAuthorView.setText(Html.fromHtml(
+                DateUtils.getRelativeTimeSpanString(
+                        cursor.getLong(ArticleLoader.Query.PUBLISHED_DATE),
+                        System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
+                        DateUtils.FORMAT_ABBREV_ALL).toString()
+                        + " by <font color='#ffffff'>"
+                        + cursor.getString(ArticleLoader.Query.AUTHOR) + "</font>"));
+
 
         mShareFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(Intent.createChooser(ShareCompat.IntentBuilder.from(getActivity())
                         .setType("text/plain")
-                        .setText(body)
+                        .setText(Html.fromHtml(cursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")))
                         .getIntent(), getString(R.string.action_share)));
             }
         });
 
+        String photo = cursor.getString(ArticleLoader.Query.PHOTO_URL);
         ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
                 .get(photo, new ImageLoader.ImageListener() {
                     @Override

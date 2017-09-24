@@ -69,6 +69,7 @@ public class ArticleListActivity extends ActionBarActivity implements
         StaggeredGridLayoutManager staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
+
         getSupportLoaderManager().initLoader(0, null, this);
 
         if (savedInstanceState == null) {
