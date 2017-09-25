@@ -30,18 +30,18 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true">
 
+                <ImageView
+                    android:id="@+id/photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    android:scaleType="fitXY"
+                    tools:ignore="ContentDescription" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/photo_background_protection" />
-
-                <ImageView
-                    android:id="@+id/photo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fitsSystemWindows="true"
-                    android:scaleType="fitXY"
-                    tools:ignore="ContentDescription" />
 
                 <LinearLayout
                     android:id="@+id/meta_bar"
@@ -50,10 +50,10 @@
                     android:layout_gravity="bottom"
                     android:elevation="4dp"
                     android:orientation="vertical"
-                    android:paddingBottom="24dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:paddingTop="24dp">
+                    android:paddingBottom="@dimen/toolbar_padding_bottom"
+                    android:paddingLeft="@dimen/toolbar_padding_left_right"
+                    android:paddingRight="@dimen/toolbar_padding_left_right"
+                    android:paddingTop="@dimen/toolbar_padding_top">
 
                     <TextView
                         android:id="@+id/article_title"
@@ -78,9 +78,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:contentInsetStart="16dp"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
-
-            </android.support.v7.widget.Toolbar>
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
@@ -100,18 +98,17 @@
                 android:id="@+id/article_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginBottom="@dimen/article_margin_top_bottom"
+                android:layout_marginLeft="@dimen/article_margin_left_right"
+                android:layout_marginRight="@dimen/article_margin_left_right"
+                android:layout_marginTop="@dimen/article_margin_top_bottom"
                 android:autoLink="web|phone|email"
                 android:linksClickable="true"
-                android:paddingTop="24dp"
+                android:paddingTop="@dimen/article_padding_top"
                 android:textColor="@android:color/black"
                 android:textSize="20sp" />
 
         </LinearLayout>
-
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
@@ -121,7 +118,7 @@
         android:layout_margin="16dp"
         android:clickable="true"
         android:src="@drawable/ic_share_black_24dp"
-        app:elevation="4dp"
+        app:elevation="@dimen/fab_elevation"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end" />
 
