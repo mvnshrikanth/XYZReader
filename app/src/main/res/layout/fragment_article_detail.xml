@@ -10,7 +10,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="@dimen/appbar_height"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -19,8 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:expandedTitleMargin="16dp"
-            app:expandedTitleMarginBottom="40dp"
+            app:expandedTitleMargin="@dimen/title_margin"
+            app:expandedTitleMarginBottom="@dimen/title_margin_bottom"
             app:expandedTitleTextAppearance="@style/ExpandedTitleTextAppearance"
             app:layout_scrollFlags="scroll"
             app:toolbarId="@+id/toolbar">
