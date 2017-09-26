@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="material_component_cards_padding_from_edge_of_screen_to_card">4dp</dimen>
-    <dimen name="material_layout_vertical_spacing_between_content_areas">8dp</dimen>
+    <dimen name="left_padding">4dp</dimen>
+    <dimen name="toolbar_padding_margin">8dp</dimen>
+    <dimen name="padding_top_bottom">4dp</dimen>
+    <dimen name="card_view_margin">4dp</dimen>
+    <dimen name="title_author_text_padding">16dp</dimen>
+    <dimen name="toolbar_height">100dp</dimen>
+    <dimen name="toolbar_padding_bottom">16dp</dimen>
+    <dimen name="toolbar_padding_top">16dp</dimen>
+    <dimen name="toolbar_padding_left_right">16dp</dimen>
+    <dimen name="article_margin_top_bottom">16dp</dimen>
+    <dimen name="article_margin_left_right">16dp</dimen>
+    <dimen name="article_padding_top">16dp</dimen>
+    <dimen name="fab_elevation">4dp</dimen>
+    <dimen name="appbar_height">320dp</dimen>
+    <dimen name="title_margin">16dp</dimen>
+    <dimen name="title_margin_bottom">40dp</dimen>
+    <dimen name="layout_max_width">600dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

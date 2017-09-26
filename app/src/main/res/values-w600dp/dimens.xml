@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="left_padding">64dp</dimen>
+    <dimen name="card_view_margin">8dp</dimen>
+    <dimen name="toolbar_padding_bottom">24dp</dimen>
+    <dimen name="toolbar_padding_top">24dp</dimen>
+    <dimen name="article_margin_top_bottom">24dp</dimen>
+    <dimen name="article_padding_top">24dp</dimen>
+</resources>

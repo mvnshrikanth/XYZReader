@@ -1,18 +1,16 @@
 package com.example.sunny.xyzreader.ui;
 
-
-import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.graphics.Palette;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -21,14 +19,9 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.example.sunny.xyzreader.R;
 import com.example.sunny.xyzreader.data.ArticleLoader;
 import com.example.sunny.xyzreader.data.ItemsContract;
@@ -52,6 +45,7 @@ public class ArticleListActivity extends ActionBarActivity implements
     RecyclerView mRecyclerView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    private int mMutedColor = 0xFF333333;
     private GregorianCalendar START_OF_EPOCH = new GregorianCalendar(2, 1, 1);
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     private SimpleDateFormat outputFormat = new SimpleDateFormat();
@@ -76,7 +70,8 @@ public class ArticleListActivity extends ActionBarActivity implements
         StaggeredGridLayoutManager staggeredGridLayoutManager =
                 new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
-        getLoaderManager().initLoader(0, null, this);
+
+        getSupportLoaderManager().initLoader(0, null, this);
 
         if (savedInstanceState == null) {
             refresh();
@@ -129,12 +124,14 @@ public class ArticleListActivity extends ActionBarActivity implements
         public DynamicHeightNetworkImageView thumbnailView;
         public TextView titleView;
         public TextView subtitleView;
+        public LinearLayout linearLayout;
 
         public ViewHolder(View view) {
             super(view);
             thumbnailView = (DynamicHeightNetworkImageView) view.findViewById(R.id.thumbnail);
             titleView = (TextView) view.findViewById(R.id.article_title);
             subtitleView = (TextView) view.findViewById(R.id.article_subtitle);
+            linearLayout = (LinearLayout) view.findViewById(R.id.linear_layout_item);
         }
     }
 
@@ -180,6 +177,8 @@ public class ArticleListActivity extends ActionBarActivity implements
         public void onBindViewHolder(final ViewHolder holder, int position) {
             mCursor.moveToPosition(position);
             holder.titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
+            holder.titleView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Quicksand-Medium.ttf"));
+
             Date publishedDate = parsePublishedDate();
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
 
@@ -197,31 +196,13 @@ public class ArticleListActivity extends ActionBarActivity implements
                                 + mCursor.getString(ArticleLoader.Query.AUTHOR)));
             }
 
+            holder.subtitleView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Quicksand-Medium.ttf"));
 
-            Glide.clear(holder.thumbnailView);
-            Glide.with(holder.thumbnailView.getContext())
-                    .load(mCursor.getString(ArticleLoader.Query.THUMB_URL))
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .dontAnimate()
-                    .listener(new RequestListener<String, GlideDrawable>() {
-                        @Override
-                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            return false;
-                        }
+            holder.thumbnailView.setImageUrl(
+                    mCursor.getString(ArticleLoader.Query.THUMB_URL),
+                    ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
+            holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
 
-                        @Override
-                        public boolean onResourceReady(GlideDrawable resource, String model,
-                                                       Target<GlideDrawable> target,
-                                                       boolean isFromMemoryCache, boolean isFirstResource) {
-                            Bitmap bitmap = ((GlideBitmapDrawable) resource.getCurrent()).getBitmap();
-                            Palette palette = Palette.generate(bitmap);
-                            int defaultColor = 0xFF333333;
-                            int color = palette.getDarkMutedColor(defaultColor);
-                            holder.itemView.setBackgroundColor(color);
-                            return false;
-                        }
-                    })
-                    .into(holder.thumbnailView);
         }
 
         @Override

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.sunny.xyzreader">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,6 +18,7 @@
         <activity android:name=".ui.ArticleListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -29,6 +31,19 @@
             android:name=".data.ItemsProvider"
             android:authorities="com.example.sunny.xyzreader"
             android:exported="false" />
+
+        <activity
+            android:name=".ui.ArticleDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter tools:ignore="GoogleAppIndexingWarning">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="vnd.android.cursor.item/vnd.com.example.sunny.xyzreader.items" />
+            </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.ArticleListActivity" />
+        </activity>
     </application>
 
 </manifest>
