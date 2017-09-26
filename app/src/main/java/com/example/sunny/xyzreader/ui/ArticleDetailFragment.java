@@ -3,6 +3,7 @@ package com.example.sunny.xyzreader.ui;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -111,6 +112,7 @@ public class ArticleDetailFragment extends Fragment
         }
 
         mBodyView.setText(Html.fromHtml(cursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
+        mBodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Quicksand-Regular.ttf"));
 
         if (mToolbar != null) {
             mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
@@ -124,6 +126,7 @@ public class ArticleDetailFragment extends Fragment
 
         final String title = cursor.getString(ArticleLoader.Query.TITLE);
         mTitleView.setText(title);
+        mTitleView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Quicksand-Medium.ttf"));
 
         mAuthorView.setText(Html.fromHtml(
                 DateUtils.getRelativeTimeSpanString(
@@ -132,7 +135,7 @@ public class ArticleDetailFragment extends Fragment
                         DateUtils.FORMAT_ABBREV_ALL).toString()
                         + " by <font color='#ffffff'>"
                         + cursor.getString(ArticleLoader.Query.AUTHOR) + "</font>"));
-
+        mAuthorView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Quicksand-Medium.ttf"));
 
         mShareFab.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -176,6 +177,8 @@ public class ArticleListActivity extends ActionBarActivity implements
         public void onBindViewHolder(final ViewHolder holder, int position) {
             mCursor.moveToPosition(position);
             holder.titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
+            holder.titleView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Quicksand-Medium.ttf"));
+
             Date publishedDate = parsePublishedDate();
             if (!publishedDate.before(START_OF_EPOCH.getTime())) {
 
@@ -193,31 +196,12 @@ public class ArticleListActivity extends ActionBarActivity implements
                                 + mCursor.getString(ArticleLoader.Query.AUTHOR)));
             }
 
+            holder.subtitleView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Quicksand-Medium.ttf"));
 
             holder.thumbnailView.setImageUrl(
                     mCursor.getString(ArticleLoader.Query.THUMB_URL),
                     ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
             holder.thumbnailView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
-//
-//
-//            ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader()
-//                    .get(mCursor.getString(ArticleLoader.Query.THUMB_URL), new ImageLoader.ImageListener() {
-//                        @Override
-//                        public void onErrorResponse(VolleyError error) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-//                            Bitmap bitmap = response.getBitmap();
-//                            if (bitmap != null) {
-//                                Palette p = Palette.generate(bitmap, 12);
-//                                mMutedColor = p.getDarkMutedColor(0xFF333333);
-//                                holder.thumbnailView.setImageBitmap(response.getBitmap());
-//                                holder.linearLayout.setBackgroundColor(mMutedColor);
-//                            }
-//                        }
-//                    });
 
         }
 
