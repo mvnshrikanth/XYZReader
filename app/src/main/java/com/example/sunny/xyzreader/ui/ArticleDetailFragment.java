@@ -24,8 +24,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.sunny.xyzreader.R;
 import com.example.sunny.xyzreader.data.ArticleLoader;
 
@@ -133,8 +137,8 @@ public class ArticleDetailFragment extends Fragment
                         cursor.getLong(ArticleLoader.Query.PUBLISHED_DATE),
                         System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
                         DateUtils.FORMAT_ABBREV_ALL).toString()
-                        + " by <font color='#ffffff'>"
-                        + cursor.getString(ArticleLoader.Query.AUTHOR) + "</font>"));
+                        + " by "
+                        + cursor.getString(ArticleLoader.Query.AUTHOR)));
         mAuthorView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Quicksand-Medium.ttf"));
 
         mShareFab.setOnClickListener(new View.OnClickListener() {
@@ -148,28 +152,29 @@ public class ArticleDetailFragment extends Fragment
         });
 
         String photo = cursor.getString(ArticleLoader.Query.PHOTO_URL);
-        ImageLoaderHelper.getInstance(getActivity()).getImageLoader()
-                .get(photo, new ImageLoader.ImageListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
 
+        Glide.with(mPhotoView.getContext())
+                .load(photo)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
                     }
 
                     @Override
-                    public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
-                        Bitmap bitmap = response.getBitmap();
-                        if (bitmap != null) {
-                            Palette p = Palette.generate(bitmap, 12);
-                            mMutedColor = p.getDarkMutedColor(0xFF333333);
-                            mPhotoView.setImageBitmap(response.getBitmap());
-                            metaBar.setBackgroundColor(mMutedColor);
-                            if (mCollapsingToolbarLayout != null) {
-                                mCollapsingToolbarLayout.setContentScrimColor(mMutedColor);
-                                mCollapsingToolbarLayout.setStatusBarScrimColor(mMutedColor);
-                            }
-                        }
+                    public boolean onResourceReady(GlideDrawable resource,
+                                                   String model, Target<GlideDrawable> target,
+                                                   boolean isFromMemoryCache, boolean isFirstResource) {
+                        Bitmap bitmap = ((GlideBitmapDrawable) resource.getCurrent()).getBitmap();
+                        Palette palette = Palette.generate(bitmap);
+                        int defaultColor = 0xFF333333;
+                        int color = palette.getDarkMutedColor(defaultColor);
+                        metaBar.setBackgroundColor(color);
+                        return false;
                     }
-                });
+                })
+                .into(mPhotoView);
     }
 
     @Override

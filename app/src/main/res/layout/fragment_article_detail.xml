@@ -11,6 +11,7 @@
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/appbar_height"
+        android:elevation="@dimen/appbar_elevation"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -65,9 +66,10 @@
 
                     <TextView
                         android:id="@+id/article_author"
-                        style="?android:attr/textAppearanceSmall"
+                        style="?android:attr/textAppearanceMedium"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/ltgray" />
 
                 </LinearLayout>
             </FrameLayout>
@@ -117,8 +119,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:clickable="true"
+        android:elevation="@dimen/fab_elevation"
         android:src="@drawable/ic_share_black_24dp"
-        app:elevation="@dimen/fab_elevation"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end" />
 
