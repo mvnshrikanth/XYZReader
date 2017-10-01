@@ -184,6 +184,7 @@ public class ArticleListActivity extends AppCompatActivity implements
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
+
             mCursor.moveToPosition(position);
             holder.titleView.setText(mCursor.getString(ArticleLoader.Query.TITLE));
             holder.titleView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Quicksand-Medium.ttf"));
@@ -210,7 +211,8 @@ public class ArticleListActivity extends AppCompatActivity implements
             Glide.with(holder.thumbnailView.getContext())
                     .load(mCursor.getString(ArticleLoader.Query.THUMB_URL))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .dontAnimate()
+                    .override(600, 200)
+                    .thumbnail(0.1f)
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e,

@@ -66,7 +66,6 @@ public class ArticleDetailFragment extends Fragment
     AppBarLayout mAppBarLayout;
     private long mItemId;
     private Unbinder unbinder;
-    private int mMutedColor = 0xFF333333;
 
     public ArticleDetailFragment() {
     }
@@ -156,6 +155,8 @@ public class ArticleDetailFragment extends Fragment
         Glide.with(mPhotoView.getContext())
                 .load(photo)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .override(600, 200)
+                .thumbnail(0.1f)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
