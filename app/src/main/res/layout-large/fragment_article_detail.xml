@@ -34,7 +34,7 @@
                     android:id="@+id/photo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerCrop"
                     app:layout_collapseMode="parallax"
                     tools:ignore="ContentDescription" />
 
@@ -123,6 +123,7 @@
                     android:layout_marginTop="@dimen/article_margin_top_bottom"
                     android:autoLink="web|phone|email"
                     android:linksClickable="true"
+                    android:padding="48dp"
                     android:textColor="@android:color/black"
                     android:textSize="20sp" />
 

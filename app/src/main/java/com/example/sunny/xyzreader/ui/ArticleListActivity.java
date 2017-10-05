@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
@@ -21,25 +23,22 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.example.sunny.xyzreader.R;
 import com.example.sunny.xyzreader.data.ArticleLoader;
 import com.example.sunny.xyzreader.data.ItemsContract;
 import com.example.sunny.xyzreader.data.UpdaterService;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -130,17 +129,42 @@ public class ArticleListActivity extends AppCompatActivity implements
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView thumbnailView;
+
+        public DynamicHeightNetworkImageView dynamicHeightNetworkImageView;
         public TextView titleView;
         public TextView subtitleView;
         public LinearLayout linearLayout;
 
         public ViewHolder(View view) {
             super(view);
-            thumbnailView = (ImageView) view.findViewById(R.id.thumbnail);
+            dynamicHeightNetworkImageView = (DynamicHeightNetworkImageView) view.findViewById(R.id.dynamicHeightImage);
             titleView = (TextView) view.findViewById(R.id.article_title);
             subtitleView = (TextView) view.findViewById(R.id.article_subtitle);
             linearLayout = (LinearLayout) view.findViewById(R.id.linear_layout_item);
+        }
+    }
+
+    public static class AsyncBitmapLoader extends AsyncTask<String, String, Integer> {
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+            Bitmap bitmap = null;
+            int color = 0;
+            try {
+                URL url = new URL(strings[0]);
+                bitmap = BitmapFactory.decodeStream((InputStream) url.getContent());
+                Palette palette = Palette.from(bitmap).generate();
+                int defaultColor = 0xFF333333;
+                color = palette.getDarkMutedColor(defaultColor);
+            } catch (IOException e) {
+                Log.e(TAG, e.getMessage());
+            }
+            return color;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            super.onPostExecute(result);
         }
     }
 
@@ -208,32 +232,17 @@ public class ArticleListActivity extends AppCompatActivity implements
 
             holder.subtitleView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Quicksand-Medium.ttf"));
 
-            Glide.with(holder.thumbnailView.getContext())
-                    .load(mCursor.getString(ArticleLoader.Query.THUMB_URL))
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .override(600, 200)
-                    .thumbnail(0.1f)
-                    .listener(new RequestListener<String, GlideDrawable>() {
-                        @Override
-                        public boolean onException(Exception e,
-                                                   String model,
-                                                   Target<GlideDrawable> target,
-                                                   boolean isFirstResource) {
-                            return false;
-                        }
+            holder.dynamicHeightNetworkImageView.setImageUrl(
+                    mCursor.getString(ArticleLoader.Query.THUMB_URL),
+                    ImageLoaderHelper.getInstance(ArticleListActivity.this).getImageLoader());
+            holder.dynamicHeightNetworkImageView.setAspectRatio(mCursor.getFloat(ArticleLoader.Query.ASPECT_RATIO));
 
-                        @Override
-                        public boolean onResourceReady(GlideDrawable resource,
-                                                       String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            Bitmap bitmap = ((GlideBitmapDrawable) resource.getCurrent()).getBitmap();
-                            Palette palette = Palette.generate(bitmap);
-                            int defaultColor = 0xFF333333;
-                            int color = palette.getDarkMutedColor(defaultColor);
-                            holder.itemView.setBackgroundColor(color);
-                            return false;
-                        }
-                    })
-                    .into(holder.thumbnailView);
+            try {
+                int color = new AsyncBitmapLoader().execute(mCursor.getString(ArticleLoader.Query.THUMB_URL)).get();
+                holder.itemView.setBackgroundColor(color);
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
